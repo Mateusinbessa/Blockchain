@@ -36,6 +36,9 @@ export class Blockchain {
       payload
     }
   }
+  get chain() {
+    return this.#chain
+  }
   private get ultimoBloco(): Bloco {
     return this.#chain.at(-1) as Bloco
   }
@@ -84,8 +87,21 @@ export class Blockchain {
     }
   }
   }
+  verificarBloco(bloco: Bloco): boolean {
+    // verificar se o hash do bloco anterior é igual o hash que esse bloco está falando que é o bloco anterior!
+    if (bloco.payload.hashAnterior !== this.hashUltimoBloco()) {
+      console.error(`Bloco #${bloco.payload.sequencia} inválido: O hash anterior é ${this.hashUltimoBloco().slice(0, 12)} e não ${bloco.payload.hashAnterior.slice(0, 12)}`)
+      return false
+    }
+    const hashTeste = hash(hash(JSON.stringify(bloco.payload)) + bloco.header.nonce)
+    if (!hashValidado({hash: hashTeste, dificuldade: this.dificuldade, prefixo: this.prefixoPow})) {
+      console.error(`Bloco #${bloco.payload.sequencia} inválido: Nonce ${bloco.header.nonce} é inválido e não pode ser verificado! `)
+      return false
+    }
+    return true
+  }
   enviarBloco(bloco: Bloco): Bloco[] {
-    if (verificarBloco(bloco)) {
+    if (this.verificarBloco(bloco)) {
       this.#chain.push(bloco)
       console.log(`Bloco ${bloco.payload.sequencia} foi adicionado a blockchain: ${JSON.stringify(bloco, null, 2)}`)
     }
