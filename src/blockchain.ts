@@ -42,4 +42,14 @@ export class Blockchain {
   private hashUltimoBloco() {
     return this.ultimoBloco.header.hashBloco
   }
+  criarBloco(dados: any): Bloco['payload'] { // retornará apenas o payload do bloco, pq é o que a gente precisará trabalhar, o header vai ser criado em seguida na função que a gente vai minerar!
+    const novoBloco: Bloco['payload'] = {
+      sequencia: this.ultimoBloco.payload.sequencia + 1,
+      timestamp: +new Date(),
+      dados: dados,
+      hashAnterior: this.hashUltimoBloco()
+    }
+    console.log(`Bloco #${novoBloco.sequencia} criado: ${JSON.stringify(novoBloco)}`)
+    return novoBloco
+  }
 }
