@@ -1,1 +1,14 @@
-console.log('blockchain')
+const dificuldade = Number(process.argv[2]) || 4 // --> Número de zeros (Dificuldade)
+const blockchain = new Blockchain(dificuldade)
+
+const numBlocos = Number(process.argv[3]) || 10
+let chain = blockchain.chain
+
+for (let i = 1; i <= numBlocos; i++) {
+  const bloco = blockchain.criarBloco(`Bloco ${i}`)
+  const mineInfo = blockchain.minerarBloco(bloco)
+  chain = blockchain.enviarBloco(mineInfo.blocoMinerado)
+}
+
+console.log('--- BLOCKCHAIN ---')
+console.log(chain)
