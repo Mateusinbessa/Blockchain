@@ -1,4 +1,4 @@
-import { hash } from "./utils"
+import { hash, hashValidado } from "./utils"
 
 export interface Bloco {
   header: {
@@ -21,7 +21,7 @@ export class Blockchain {
     this.#chain.push(this.criarBlocoGenesis())
   }
 
-  private criarBlocoGenesis(): Bloco {
+  private criarBlocoGenesis(): Bloco { // é criado na mão!!!
     const payload: Bloco['payload'] = {
       sequencia: 0, // primeiro bloco por isso 0
       timestamp: +new Date(), // +new Date() converte a data em número
@@ -51,5 +51,37 @@ export class Blockchain {
     }
     console.log(`Bloco #${novoBloco.sequencia} criado: ${JSON.stringify(novoBloco)}`)
     return novoBloco
+  }
+  minerarBloco(bloco: Bloco['payload']) {
+    let nonce = 0
+    const inicio = +new Date()
+
+    while(true) {
+    const hashBloco = hash(JSON.stringify(bloco))
+    const hashPow = hash(hashBloco + nonce)
+
+    //repitindo o prefixoPow varias vezes!
+    //se o prefixo for "0" e a dificuldade for 4, ele vai repetir 4 zeros = 0000
+    if (hashValidado({hash: hashPow, dificuldade: this.dificuldade, prefixo: this.prefixoPow})) {
+      //se o hash começar com nosso prefixo, ele é um hash válido!! então vamos criar o nosso header!
+      const final = +new Date()
+      const hashReduzido = hashBloco.slice(0,12)
+      const tempoMineracao = (final - inicio) / 1000
+
+      console.log(`Bloco ${bloco.sequencia} minerado em ${tempoMineracao}s. Hash ${hashReduzido} (${nonce} tentativas)`)
+      return {
+        blocoMinerado: {
+          payload: {...bloco},
+          header: {
+            nonce: nonce,
+            hashBloco: hashBloco
+          }
+        }
+      }
+    } 
+    else {
+      nonce++
+    }
+  }
   }
 }
