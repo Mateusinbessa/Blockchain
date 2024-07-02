@@ -1,0 +1,11 @@
+{
+  "name": "blockchain",
+  "version": "1.0.0",
+  "description": "My own blockchain",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "main": "src/index.js",
+  "author": "Mateusin",
+  "license": "MIT"
+}
