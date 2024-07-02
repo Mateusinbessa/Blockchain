@@ -1,3 +1,5 @@
+import { Blockchain } from "./blockchain"
+
 const dificuldade = Number(process.argv[2]) || 4 // --> Número de zeros (Dificuldade)
 const blockchain = new Blockchain(dificuldade)
 
