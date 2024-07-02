@@ -84,4 +84,11 @@ export class Blockchain {
     }
   }
   }
+  enviarBloco(bloco: Bloco): Bloco[] {
+    if (verificarBloco(bloco)) {
+      this.#chain.push(bloco)
+      console.log(`Bloco ${bloco.payload.sequencia} foi adicionado a blockchain: ${JSON.stringify(bloco, null, 2)}`)
+    }
+    return this.#chain
+  }
 }
