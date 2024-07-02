@@ -3,9 +3,14 @@
   "version": "1.0.0",
   "description": "My own blockchain",
   "scripts": {
-    "start": "node src/index.js"
+    "dev": "ts-node src/index.ts"
   },
   "main": "src/index.js",
   "author": "Mateusin",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
+  }
 }
