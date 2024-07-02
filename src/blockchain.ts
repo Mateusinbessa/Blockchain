@@ -36,4 +36,10 @@ export class Blockchain {
       payload
     }
   }
+  private get ultimoBloco(): Bloco {
+    return this.#chain.at(-1) as Bloco
+  }
+  private hashUltimoBloco() {
+    return this.ultimoBloco.header.hashBloco
+  }
 }
